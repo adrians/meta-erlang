@@ -3,10 +3,10 @@ version: 2.1
 parameters:
   yocto-branch:
     type: string
-    default: "dunfell"
+    default: "gatesgarth"
   yocto-version:
     type: string
-    default: "yocto-3.1"
+    default: "yocto-3.2"
 
 jobs:
   build:
@@ -39,20 +39,24 @@ jobs:
           command: TEMPLATECONF=../.circleci source poky/oe-init-build-env build
       - run:
           name: Build erlang
-          command: source poky/oe-init-build-env build && bitbake -p erlang
+          command: source poky/oe-init-build-env build && bitbake erlang
           no_output_timeout: 50m
       - run:
           name: Build elixir
-          command: source poky/oe-init-build-env build && bitbake -p elixir
+          command: source poky/oe-init-build-env build && bitbake elixir
           no_output_timeout: 50m
       - run:
-          name: Build emqx
-          command: source poky/oe-init-build-env build && bitbake -p emqx
+          name: Build rebar3
+          command: source poky/oe-init-build-env build && bitbake rebar3
           no_output_timeout: 50m
-      - run:
-          name: Build emqx-edge
-          command: source poky/oe-init-build-env build && bitbake -p emqx-edge
-          no_output_timeout: 50m
+#      - run:
+#          name: Build emqx
+#          command: source poky/oe-init-build-env build && bitbake emqx
+#          no_output_timeout: 50m
+#      - run:
+#          name: Build emqx-edge
+#          command: source poky/oe-init-build-env build && bitbake emqx-edge
+#          no_output_timeout: 50m
 
       - save_cache:
           key: v1-sstate-test-{{ .Branch }}-{{ .Revision }}
